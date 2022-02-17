@@ -1,5 +1,7 @@
 # Taiwan Amphibian Conservation data to GBIF
 
+[台灣兩棲類動物保育協會](https://www.froghome.org/)
+
 ## Sampling Event
 
 Event Core:
@@ -24,7 +26,7 @@ LEFT JOIN zipcode_citytown AS z ON z.zipcode = e.zipcode
 
 Occurrence:
 
-```
+```sql
 SELECT
   d.detail_record_no AS occurrenceID,
   d.master_record_no AS eventID,
@@ -47,12 +49,21 @@ LEFT JOIN observer_member_rel AS o ON o.master_record_no = d.master_record_no
 LEFT JOIN frogteam AS t ON t.team_id = e.team_id
 ```
 
+## Development
+
+Run MySQL & Adminer.php by docker-compose
+
+```
+$ docker-compose up
+```
+
 ## Problems
 
 - frogmasterrecord.observers 是用 id跟逗號 的字串儲存，不好變成名字
   - 有用 MySQL 的 FIND_IN_SET 跟 GROUP_CONCAT 搭配 GROUP BY 處理，但是速度很慢
   - 要另外稍微用 python 程式處理 `scripts/insert-member-name.py`
 - zipcode 另外建一個表 zipcode_citytown
+  - 產生 zipcode 對照 **"{縣市} {鄉鎮/區}"** `scripts/insert-zipcode.py`
 
 ```sql
 -- Adminer 4.8.1 MySQL 5.6.51 dump
