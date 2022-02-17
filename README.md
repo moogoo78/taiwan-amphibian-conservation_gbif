@@ -4,124 +4,16 @@
 
 ## Sampling Event
 
-Event Core:
+Create csv (txt extension) from SQL files:
 
-```sql
-SELECT
-  e.master_record_no AS eventID,
-  'Event' AS type,
-  'https://tad.froghome.org/guide/index.html' AS samplingProtocol,
-  CONCAT(DATE_FORMAT(e.init_time, '%Y-%m-%dT%H:%i:%S'), '+08/', DATE_FORMAT(e.stop_time, '%Y-%m-%dT%H:%i:%S'), '+08') AS eventDate,
-  CONCAT_WS(' ', z.name, e.position) AS locality,
-  e.locationset_no AS locationID,
-  'TW' AS countryCode,
-  CONCAT(e.altitude, ' m') AS verbatimElevation,
-  e.longitude AS decimalLongitude,
-  e.latitude AS decimalLatitude,
-  'WGS84' AS geodeticDatum,
-  e.accuracy AS coordinateUncertaintyInMetersProperty
-FROM frogmasterdata AS e
-LEFT JOIN zipcode_citytown AS z ON z.zipcode = e.zipcode
+- [event.sql](./sql-files/event.sql)
+- [occurrence.sql](./sql-files/occurrence.sql)
+- [measurement-or-facts.sql](./sql-files/mearusement-or-facts.sql)
+
+```sh
+$ mysql -u root -p frog < {foo.sql} > {foo.txt}
 ```
 
-Occurrence:
-
-```sql
-SELECT
-  d.detail_record_no AS occurrenceID,
-  d.master_record_no AS eventID,
-  'HumanObservation' AS basisOfRecord,
-  CONCAT_WS('_', t.team_name, o.names) AS recordedBy,
-  CONCAT_WS(' ', f.frog_ename, f.infraspecies, f.author) AS scientificName,
-  d.amount AS individualCount,
-  'col_taiwan' AS nameAccordingTo,
-  f.kingdom AS kingdom,
-  f.phylum AS phylum,
-  f.order as 'order',
-  f.class AS class,
-  f.family AS family,
-  'species' AS taxonRank,
-  f.frog_cname AS vernacularName
-FROM frogdetaildata AS d
-LEFT JOIN frog2 AS f ON f.frog_id = d.frog_id
-LEFT JOIN frogmasterdata AS e ON e.master_record_no = d.master_record_no
-LEFT JOIN observer_member_rel AS o ON o.master_record_no = d.master_record_no
-LEFT JOIN frogteam AS t ON t.team_id = e.team_id
-```
-
-measurement or facts:
-
-```sql
-SELECT
-  d.detail_record_no AS occurrenceID,
-  'habitat' AS measurementType,
-  h.habitat_name AS measurementValue,
-  '' AS measurementUnit
-FROM frogdetaildata AS d
-LEFT JOIN habitat AS h ON h.habitat_id = d.habitat_id
-
-UNION
-
-SELECT
-  d.detail_record_no AS occurrenceID,
-  'micro habitat' AS measurementType,
-  p.habitat_p1_name AS measurementValue,
-  '' AS measurementUnit
-FROM frogdetaildata AS d
-LEFT JOIN habitatp1 AS p ON p.habitat_p1_id = d.habitat_p1_id
-
-UNION
-
-SELECT
-  d.detail_record_no AS occurrenceID,
-  'behavior' AS measurementType,
-  b.behavior_name AS measurementValue,
-  '' AS measurementUnit
-FROM frogdetaildata AS d
-LEFT JOIN behavior AS b ON b.behavior_id = d.behavior_id
-
-UNION
-
-SELECT
-  d.detail_record_no AS occurrenceID,
-  'living type' AS measurementType,
-  l.living_type_id AS measurementValue,
-  '' AS measurementUnit
-FROM frogdetaildata AS d
-LEFT JOIN livingtype AS l ON l.living_type_id = d.living_type_id
-
-UNION
-
-SELECT
-  d.detail_record_no AS occurrenceID,
-  'temperature' AS measurementType,
-  ROUND(e.temperature, 2) AS measurementValue,
-  'C' AS measurementUnit
-FROM frogdetaildata AS d
-LEFT JOIN frogmasterdata AS e ON e.master_record_no = d.master_record_no
-
-UNION
-
-SELECT
-  d.detail_record_no AS occurrenceID,
-  'humidity' AS measurementType,
-  e.humidity AS measurementValue,
-  '%' AS measurementUnit
-FROM frogdetaildata AS d
-LEFT JOIN frogmasterdata AS e ON e.master_record_no = d.master_record_no
-
-UNION
-
-SELECT
-  d.detail_record_no AS occurrenceID,
-  'weather' AS measurementType,
-  w.weather_name AS measurementValue,
-  '' AS measurementUnit
-FROM frogdetaildata AS d
-LEFT JOIN frogmasterdata AS e ON e.master_record_no = d.master_record_no
-LEFT JOIN weather AS w ON w.weather_id = e.weather_id
-
-```
 ## Development
 
 Run MySQL & Adminer.php by docker-compose
