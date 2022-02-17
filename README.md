@@ -59,11 +59,14 @@ $ docker-compose up
 
 ## Problems
 
-- frogmasterrecord.observers 是用 id跟逗號 的字串儲存，不好變成名字
-  - 有用 MySQL 的 FIND_IN_SET 跟 GROUP_CONCAT 搭配 GROUP BY 處理，但是速度很慢
-  - 要另外稍微用 python 程式處理 `scripts/insert-member-name.py`
+- 學名
+  - 舊學名原始資料狀況不明 (`originalNameUsage`, `acceptedNameUsage`, `acceptedNameUsageID`)
+- recordedBy
+  - frogmasterrecord.observers 是用 id跟逗號 的字串儲存: 不好變成名字
+  - 用 MySQL 的 FIND_IN_SET 跟 GROUP_CONCAT 搭配 GROUP BY 處理，但是速度很慢
+  - 另外稍微用 python 程式處理 [insert-member-name.py](./scripts/insert-member-name.py)
 - zipcode 另外建一個表 zipcode_citytown
-  - 產生 zipcode 對照 **"{縣市} {鄉鎮/區}"** `scripts/insert-zipcode.py`
+  - 產生 zipcode 對照 **"{縣市} {鄉鎮/區}"** [insert-zipcode.py](./scripts/insert-zipcode.py)
 
 ```sql
 -- Adminer 4.8.1 MySQL 5.6.51 dump
