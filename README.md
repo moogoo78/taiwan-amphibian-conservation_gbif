@@ -33,6 +33,11 @@ $ docker-compose up
 - zipcode 另外建一個表 zipcode_citytown
   - 產生 zipcode 對照 **"{縣市} {鄉鎮/區}"** [insert-zipcode.py](./scripts/insert-zipcode.py)
 
+source data:
+
+- table: habitat 的 `暫時性靜止水域` 跟 `永久性靜止水域` 最後多一個 `\t`
+
+
 ```sql
 -- Adminer 4.8.1 MySQL 5.6.51 dump
 
@@ -47,9 +52,9 @@ CREATE TABLE `observer_member_rel` (
   `master_record_no` int(11) NOT NULL,
   `member_id` int(11) NOT NULL,
   `names` text NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `master_record_no` (`master_record_no`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 
 DROP TABLE IF EXISTS `zipcode_citytown`;
 CREATE TABLE `zipcode_citytown` (

@@ -21,5 +21,6 @@ SELECT
 FROM frogdetaildata AS d
 LEFT JOIN frog2 AS f ON f.frog_id = d.frog_id
 LEFT JOIN frogmasterdata AS e ON e.master_record_no = d.master_record_no
-LEFT JOIN observer_member_rel AS o ON o.master_record_no = d.master_record_no
+LEFT JOIN observer_member_rel AS o ON o.master_record_no = e.master_record_no
 LEFT JOIN frogteam AS t ON t.team_id = e.team_id
+ORDER BY d.detail_record_no

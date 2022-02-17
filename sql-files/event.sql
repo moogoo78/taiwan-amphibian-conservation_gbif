@@ -18,3 +18,4 @@ SELECT
   e.accuracy AS coordinateUncertaintyInMetersProperty
 FROM frogmasterdata AS e 
 LEFT JOIN zipcode_citytown AS z ON z.zipcode = e.zipcode
+ORDER BY e.master_record_no

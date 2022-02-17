@@ -71,3 +71,5 @@ SELECT
 FROM frogdetaildata AS d
 LEFT JOIN frogmasterdata AS e ON e.master_record_no = d.master_record_no
 LEFT JOIN weather AS w ON w.weather_id = e.weather_id
+
+ORDER BY detail_record_no
