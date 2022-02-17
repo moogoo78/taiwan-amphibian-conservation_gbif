@@ -49,6 +49,79 @@ LEFT JOIN observer_member_rel AS o ON o.master_record_no = d.master_record_no
 LEFT JOIN frogteam AS t ON t.team_id = e.team_id
 ```
 
+measurement or facts:
+
+```sql
+SELECT
+  d.detail_record_no AS occurrenceID,
+  'habitat' AS measurementType,
+  h.habitat_name AS measurementValue,
+  '' AS measurementUnit
+FROM frogdetaildata AS d
+LEFT JOIN habitat AS h ON h.habitat_id = d.habitat_id
+
+UNION
+
+SELECT
+  d.detail_record_no AS occurrenceID,
+  'micro habitat' AS measurementType,
+  p.habitat_p1_name AS measurementValue,
+  '' AS measurementUnit
+FROM frogdetaildata AS d
+LEFT JOIN habitatp1 AS p ON p.habitat_p1_id = d.habitat_p1_id
+
+UNION
+
+SELECT
+  d.detail_record_no AS occurrenceID,
+  'behavior' AS measurementType,
+  b.behavior_name AS measurementValue,
+  '' AS measurementUnit
+FROM frogdetaildata AS d
+LEFT JOIN behavior AS b ON b.behavior_id = d.behavior_id
+
+UNION
+
+SELECT
+  d.detail_record_no AS occurrenceID,
+  'living type' AS measurementType,
+  l.living_type_id AS measurementValue,
+  '' AS measurementUnit
+FROM frogdetaildata AS d
+LEFT JOIN livingtype AS l ON l.living_type_id = d.living_type_id
+
+UNION
+
+SELECT
+  d.detail_record_no AS occurrenceID,
+  'temperature' AS measurementType,
+  ROUND(e.temperature, 2) AS measurementValue,
+  'C' AS measurementUnit
+FROM frogdetaildata AS d
+LEFT JOIN frogmasterdata AS e ON e.master_record_no = d.master_record_no
+
+UNION
+
+SELECT
+  d.detail_record_no AS occurrenceID,
+  'humidity' AS measurementType,
+  e.humidity AS measurementValue,
+  '%' AS measurementUnit
+FROM frogdetaildata AS d
+LEFT JOIN frogmasterdata AS e ON e.master_record_no = d.master_record_no
+
+UNION
+
+SELECT
+  d.detail_record_no AS occurrenceID,
+  'weather' AS measurementType,
+  w.weather_name AS measurementValue,
+  '' AS measurementUnit
+FROM frogdetaildata AS d
+LEFT JOIN frogmasterdata AS e ON e.master_record_no = d.master_record_no
+LEFT JOIN weather AS w ON w.weather_id = e.weather_id
+
+```
 ## Development
 
 Run MySQL & Adminer.php by docker-compose
