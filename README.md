@@ -10,8 +10,20 @@ Create csv (txt extension) from SQL files:
 - [occurrence.sql](./sql-files/occurrence.sql)
 - [measurement-or-facts.sql](./sql-files/mearusement-or-facts.sql)
 
+1. copy sql to docker volume
+
 ```sh
-$ mysql -u root -p frog < {foo.sql} > {foo.txt}
+$ cp sql-files/*.sql ../frog-gbif-volumes/bucket
+```
+
+2. run in docker
+```sh
+$ dokcer-compose exec db bash
+```
+
+3. export data to csv
+```sh
+$ mysql -u root -p frog < /bucket/{foo.sql} > /bucket/{foo.csv}
 ```
 
 ## Development
@@ -70,6 +82,7 @@ CREATE TABLE `zipcode_citytown` (
 
 ## Reference
 - [Darwin Core quick reference guide - Darwin Core](https://dwc.tdwg.org/terms/)
+- [gbif/doc-sensitive-species-best-practices: This document aims to describe current best practices for dealing with primary occurrence data for sensitive species and provide guidance on how to make as freely data available as possible and as protected as necessary.](https://github.com/gbif/doc-sensitive-species-best-practices)
 
 ### Related Datasets
 
