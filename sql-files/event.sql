@@ -13,8 +13,8 @@ SELECT
   SUBSTRING_INDEX(z.name,' ', 1) AS county,
   SUBSTRING_INDEX(z.name,' ', -1) AS municipality,
   IF(f.frog_id IN (16, 17, 21, 28, 29, 31, 32),
-           SUBSTRING(e.position, 1, 2),
-           e.position
+          '',
+          e.position
           ) AS locality,
   e.locationset_no AS locationID,  
   e.altitude AS minimumElevationInMeters,
