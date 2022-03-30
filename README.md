@@ -8,7 +8,7 @@ Create csv (txt extension) from SQL files:
 
 - [event.sql](./sql-files/event.sql)
 - [occurrence.sql](./sql-files/occurrence.sql)
-- [measurement-or-facts.sql](./sql-files/mearusement-or-facts.sql)
+- [measurement-or-fact.sql](./sql-files/measurement-or-fact.sql)
 
 1. copy sql to docker volume
 
